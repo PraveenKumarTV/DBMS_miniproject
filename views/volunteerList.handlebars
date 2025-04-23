@@ -1,0 +1,57 @@
+<h1 class="mb-4">Volunteers for {{event.name}}</h1>
+
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h4>Event Details</h4>
+  </div>
+  <div class="card-body">
+    <p><strong>Event Name:</strong> {{event.name}}</p>
+    <p><strong>Organizer:</strong> {{event.organizerName}}</p>
+    <p><strong>Date & Time:</strong> {{formatDate event.date}}</p>
+    <p><strong>Venue:</strong> {{event.location}}</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-success text-white">
+    <h4>Volunteer List</h4>
+  </div>
+  <div class="card-body">
+    {{#if volunteers.length}}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Volunteer ID</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Year</th>
+              <th>Contact No</th>
+              <th>Email</th>
+              <th>Hours Worked</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each volunteers}}
+              <tr>
+                <td>{{volunteerId}}</td>
+                <td>{{name}}</td>
+                <td>{{department}}</td>
+                <td>{{yearOfStudy}}</td>
+                <td>{{contactNo}}</td>
+                <td>{{email}}</td>
+                <td>{{hoursWorked}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{else}}
+      <div class="alert alert-info">No volunteers registered for this event yet.</div>
+    {{/if}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <a href="/events" class="btn btn-secondary">Back to Events</a>
+</div>

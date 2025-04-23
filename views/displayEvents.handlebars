@@ -13,6 +13,7 @@
               <h5 class="card-title">{{name}}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{formatDate date}}</h6>
               <p class="card-text">{{description}}</p>
+              <p><strong>Organizer:</strong> {{organizerName}}</p>
               <p><strong>Location:</strong> {{venueName}}</p>
             </div>
             <div class="card-footer">
@@ -62,4 +63,9 @@
   {{else}}
     <div class="alert alert-info">No completed events available.</div>
   {{/if}}
+  <div class="mt-4">
+  <div class="d-flex justify-content-center">
+    <a href="/events/all/volunteers" class="btn btn-outline-secondary me-2">View All Volunteers</a>
+    <a href="/events/all/participants" class="btn btn-outline-secondary">View All Participants</a>
+  </div>
 </div>

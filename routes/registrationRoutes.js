@@ -33,7 +33,7 @@ router.get('/:eventId/:type', async (req, res) => {
 // Process registration
 router.post('/', async (req, res) => {
   try {
-    const { name, department, yearOfStudy, eventId, contactNo, email, type } = req.body;
+    const { name, department, yearOfStudy, eventId, contactNo, email, type, hoursWorked } = req.body;
     const db = getDB();
     
     // Validate eventId before creating ObjectId
@@ -41,19 +41,7 @@ router.post('/', async (req, res) => {
       return res.status(400).send('Invalid event ID format');
     }
     
-    // Create registration ID (you could use a more sophisticated method)
-    const lastRegistration = await db.collection('registrations')
-      .find()
-      .sort({ _id: -1 })
-      .limit(1)
-      .toArray();
-    
-    const registrationId = lastRegistration.length > 0 
-      ? `REG${parseInt(lastRegistration[0].registrationId.substring(3)) + 1}` 
-      : 'REG1001';
-    
-    await db.collection('registrations').insertOne({
-      registrationId,
+    let registrationData = {
       name,
       department,
       yearOfStudy: parseInt(yearOfStudy),
@@ -62,7 +50,30 @@ router.post('/', async (req, res) => {
       email,
       type, // 'volunteer' or 'participant'
       registeredAt: new Date()
-    });
+    };
+
+    // Create appropriate ID based on type
+    const collection = db.collection('registrations');
+    let lastId;
+    
+    if (type === 'volunteer') {
+      lastId = await collection.find({ type: 'volunteer' }).sort({ _id: -1 }).limit(1).toArray();
+      const volunteerId = lastId.length > 0 && lastId[0].volunteerId 
+        ? `VOL${parseInt(lastId[0].volunteerId.substring(3)) + 1}` 
+        : 'VOL1001';
+      
+      registrationData.volunteerId = volunteerId;
+      registrationData.hoursWorked = hoursWorked ? parseInt(hoursWorked) : 0;
+    } else {
+      lastId = await collection.find({ type: 'participant' }).sort({ _id: -1 }).limit(1).toArray();
+      const participantId = lastId.length > 0 && lastId[0].participantId 
+        ? `PAR${parseInt(lastId[0].participantId.substring(3)) + 1}` 
+        : 'PAR1001';
+      
+      registrationData.participantId = participantId;
+    }
+    
+    await collection.insertOne(registrationData);
     
     res.redirect('/events');
   } catch (err) {

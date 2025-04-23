@@ -39,6 +39,14 @@
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" id="email" name="email" required>
       </div>
+
+        {{#if (eq type "volunteer")}}
+      <div class="mb-3">
+        <label for="hoursWorked" class="form-label">Hours Committed to Work</label>
+        <input type="number" class="form-control" id="hoursWorked" name="hoursWorked" min="1" value="0">
+        <small class="form-text text-muted">You can update this later as you complete your volunteer hours.</small>
+      </div>
+      {{/if}}
       
       <button type="submit" class="btn btn-primary">Register</button>
       <a href="/events" class="btn btn-secondary">Cancel</a>
