@@ -1,8 +1,8 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
-// Database Name
+// Connection URL from environment variable
+const url = process.env.STRING;
 const dbName = 'eventManagementSystem';
 
 let db;

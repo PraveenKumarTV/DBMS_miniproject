@@ -5,10 +5,13 @@ const methodOverride = require('method-override');
 const path = require('path');
 const moment = require('moment');
 const { connectDB } = require('./config/db');
-
+require('dotenv').config();
 // Import routes
 const eventRoutes = require('./routes/eventRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
+const venueRoutes = require('./routes/venue');
+
+
 
 // Initialize app
 const app = express();
@@ -42,6 +45,7 @@ app.set('view engine', 'handlebars');
 // Routes
 app.use('/events', eventRoutes);
 app.use('/register', registrationRoutes);
+app.use('/venue', venueRoutes);
 
 // Home route
 app.get('/', (req, res) => {

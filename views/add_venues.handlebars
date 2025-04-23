@@ -1,0 +1,40 @@
+<h2>Add New Venue</h2>
+
+<form action="/venue/add" method="POST">
+  <div class="mb-3">
+    <label for="VenueID" class="form-label">Venue ID</label>
+    <input type="text" class="form-control" id="VenueID" name="VenueID" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="VenueName" class="form-label">Venue Name</label>
+    <input type="text" class="form-control" id="VenueName" name="VenueName" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="VenueType" class="form-label">Type</label>
+    <input type="text" class="form-control" id="VenueType" name="VenueType">
+  </div>
+
+  <div class="mb-3">
+    <label for="Timings" class="form-label">Timings</label>
+    <input type="text" class="form-control" id="Timings" name="Timings">
+  </div>
+
+  <div class="mb-3">
+    <label for="Capacity" class="form-label">Capacity</label>
+    <input type="number" class="form-control" id="Capacity" name="Capacity">
+  </div>
+
+  <div class="mb-3">
+    <label for="Facilities" class="form-label">Facilities</label>
+    <input type="text" class="form-control" id="Facilities" name="Facilities">
+  </div>
+
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="Availability" name="Availability" checked>
+    <label class="form-check-label" for="Availability">Available</label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add Venue</button>
+</form>

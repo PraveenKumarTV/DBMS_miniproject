@@ -1,0 +1,26 @@
+<h2>Venue List</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Available</th>
+      <th>   </th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each venues}}
+      <tr>
+        <td>{{VenueName}}</td>
+        <td>{{VenueType}}</td>
+        <td>{{#if Availability}}Yes{{else}}No{{/if}}</td>
+        <td>
+          <form method="POST" action="/venue/toggle/{{VenueID}}">
+            <button type="submit" class="btn btn-sm btn-secondary">Press</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
