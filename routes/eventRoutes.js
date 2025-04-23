@@ -87,23 +87,26 @@ router.post('/', async (req, res) => {
 });
 
 
+// Utility to fetch event and venue details
+async function getEventWithVenue(db, eventId) {
+  const event = await db.collection('events').findOne({ _id: new ObjectId(eventId) });
+  if (!event) return null;
+
+  const venue = await db.collection('venues').findOne({ _id: new ObjectId(event.venueId) });
+  event.venueName = venue ? venue.VenueName : 'Unknown Venue';
+  return event;
+}
+
 // View event details
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // Validate id is a valid ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).send('Invalid event ID format');
-    }
-    
+    if (!ObjectId.isValid(id)) return res.status(400).send('Invalid event ID format');
+
     const db = getDB();
-    const event = await db.collection('events').findOne({ _id: new ObjectId(id) });
-    
-    if (!event) {
-      return res.status(404).send('Event not found');
-    }
-    
+    const event = await getEventWithVenue(db, id);
+    if (!event) return res.status(404).send('Event not found');
+
     res.render('eventDetails', { event });
   } catch (err) {
     console.error(err);
@@ -111,24 +114,22 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-// Display all volunteers 
+// Display all volunteers
 router.get('/all/volunteers', async (req, res) => {
   try {
     const db = getDB();
     const volunteers = await db.collection('registrations')
-      .find({ type: 'volunteer' })
-      .toArray();
-    
-    // Get event details for each volunteer
+      .find({ type: 'volunteer' }).toArray();
+
     const volunteersWithEventDetails = await Promise.all(volunteers.map(async (volunteer) => {
-      const event = await db.collection('events').findOne({ _id: volunteer.eventId });
+      const event = await getEventWithVenue(db, volunteer.eventId);
       return {
         ...volunteer,
-        eventName: event ? event.name : 'Unknown Event'
+        eventName: event ? event.name : 'Unknown Event',
+        venueName: event ? event.venueName : 'Unknown Venue'
       };
     }));
-    
+
     res.render('allVolunteers', { volunteers: volunteersWithEventDetails });
   } catch (err) {
     console.error(err);
@@ -141,18 +142,17 @@ router.get('/all/participants', async (req, res) => {
   try {
     const db = getDB();
     const participants = await db.collection('registrations')
-      .find({ type: 'participant' })
-      .toArray();
-    
-    // Get event details for each participant
+      .find({ type: 'participant' }).toArray();
+
     const participantsWithEventDetails = await Promise.all(participants.map(async (participant) => {
-      const event = await db.collection('events').findOne({ _id: participant.eventId });
+      const event = await getEventWithVenue(db, participant.eventId);
       return {
         ...participant,
-        eventName: event ? event.name : 'Unknown Event'
+        eventName: event ? event.name : 'Unknown Event',
+        venueName: event ? event.venueName : 'Unknown Venue'
       };
     }));
-    
+
     res.render('allParticipants', { participants: participantsWithEventDetails });
   } catch (err) {
     console.error(err);
@@ -160,30 +160,19 @@ router.get('/all/participants', async (req, res) => {
   }
 });
 
-
 // Display volunteers for an event
 router.get('/:id/volunteers', async (req, res) => {
   try {
     const { id } = req.params;
-    
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).send('Invalid event ID format');
-    }
-    
+    if (!ObjectId.isValid(id)) return res.status(400).send('Invalid event ID format');
+
     const db = getDB();
-    const event = await db.collection('events').findOne({ _id: new ObjectId(id) });
-    
-    if (!event) {
-      return res.status(404).send('Event not found');
-    }
-    
+    const event = await getEventWithVenue(db, id);
+    if (!event) return res.status(404).send('Event not found');
+
     const volunteers = await db.collection('registrations')
-      .find({ 
-        eventId: new ObjectId(id),
-        type: 'volunteer'
-      })
-      .toArray();
-    
+      .find({ eventId: new ObjectId(id), type: 'volunteer' }).toArray();
+
     res.render('volunteerList', { event, volunteers });
   } catch (err) {
     console.error(err);
@@ -195,31 +184,20 @@ router.get('/:id/volunteers', async (req, res) => {
 router.get('/:id/participants', async (req, res) => {
   try {
     const { id } = req.params;
-    
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).send('Invalid event ID format');
-    }
-    
+    if (!ObjectId.isValid(id)) return res.status(400).send('Invalid event ID format');
+
     const db = getDB();
-    const event = await db.collection('events').findOne({ _id: new ObjectId(id) });
-    
-    if (!event) {
-      return res.status(404).send('Event not found');
-    }
-    
+    const event = await getEventWithVenue(db, id);
+    if (!event) return res.status(404).send('Event not found');
+
     const participants = await db.collection('registrations')
-      .find({ 
-        eventId: new ObjectId(id),
-        type: 'participant'
-      })
-      .toArray();
-    
+      .find({ eventId: new ObjectId(id), type: 'participant' }).toArray();
+
     res.render('participantList', { event, participants });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
   }
 });
-
 
 module.exports = router;

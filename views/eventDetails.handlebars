@@ -11,12 +11,12 @@
       </div>
       <div class="col-md-6">
         <p><strong>Location:</strong> {{event.venueName}}</p>
-           <p><strong>Organizer:</strong> {{event.organizerName}}</p>
+        <p><strong>Organizer:</strong> {{event.organizerName}}</p>
       </div>
     </div>
-    
+
     {{#isFutureDate event.date}}
-      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4 mb-3">
         <a href="/register/{{event._id}}/participant" class="btn btn-primary me-md-2">Register as Participant</a>
         <a href="/register/{{event._id}}/volunteer" class="btn btn-outline-primary">Register as Volunteer</a>
       </div>
@@ -25,6 +25,12 @@
         This event has already taken place.
       </div>
     {{/isFutureDate}}
+
+    <!-- View Participants & Volunteers -->
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+      <a href="/events/{{event._id}}/participants" class="btn btn-outline-success me-md-2">View Participants</a>
+      <a href="/events/{{event._id}}/volunteers" class="btn btn-outline-warning">View Volunteers</a>
+    </div>
   </div>
 </div>
 
