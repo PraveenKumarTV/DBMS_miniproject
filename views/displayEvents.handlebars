@@ -1,0 +1,58 @@
+<h1 class="mb-4">Events</h1>
+
+<!-- Upcoming Events -->
+<div class="mb-5">
+  <h2 class="text-primary">Upcoming Events</h2>
+  
+  {{#if upcomingEvents.length}}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {{#each upcomingEvents}}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{name}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{formatDate date}}</h6>
+              <p class="card-text">{{description}}</p>
+              <p><strong>Location:</strong> {{location}}</p>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <a href="/register/{{_id}}/participant" class="btn btn-primary btn-sm">Register as Participant</a>
+                <a href="/register/{{_id}}/volunteer" class="btn btn-outline-primary btn-sm">Register as Volunteer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="alert alert-info">No upcoming events available.</div>
+  {{/if}}
+</div>
+
+<!-- Completed Events -->
+<div>
+  <h2 class="text-secondary">Completed Events</h2>
+  
+  {{#if completedEvents.length}}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {{#each completedEvents}}
+        <div class="col">
+          <div class="card h-100 bg-light">
+            <div class="card-body">
+              <h5 class="card-title">{{name}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{formatDate date}}</h6>
+              <p class="card-text">{{description}}</p>
+              <p><strong>Location:</strong> {{location}}</p>
+            </div>
+            <div class="card-footer">
+              <span class="badge bg-secondary">Completed</span>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="alert alert-info">No completed events available.</div>
+  {{/if}}
+</div>

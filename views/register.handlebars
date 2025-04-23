@@ -1,0 +1,47 @@
+<h1 class="mb-4">
+  Register as {{#if (eq type "volunteer")}}Volunteer{{else}}Participant{{/if}} for {{event.name}}
+</h1>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/register" method="POST">
+      <input type="hidden" name="eventId" value="{{event._id}}">
+      <input type="hidden" name="type" value="{{type}}">
+      
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="department" class="form-label">Department</label>
+        <input type="text" class="form-control" id="department" name="department" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="yearOfStudy" class="form-label">Year of Study</label>
+        <select class="form-select" id="yearOfStudy" name="yearOfStudy" required>
+          <option value="">Select Year</option>
+          <option value="1">1st Year</option>
+          <option value="2">2nd Year</option>
+          <option value="3">3rd Year</option>
+          <option value="4">4th Year</option>
+          <option value="5">5th Year</option>
+        </select>
+      </div>
+      
+      <div class="mb-3">
+        <label for="contactNo" class="form-label">Contact Number</label>
+        <input type="tel" class="form-control" id="contactNo" name="contactNo" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Register</button>
+      <a href="/events" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>

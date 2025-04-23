@@ -1,0 +1,30 @@
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h2>{{event.name}}</h2>
+  </div>
+  <div class="card-body">
+    <p class="lead">{{event.description}}</p>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Date & Time:</strong> {{formatDate event.date}}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Location:</strong> {{event.location}}</p>
+      </div>
+    </div>
+    
+    {{#isFutureDate event.date}}
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+        <a href="/register/{{event._id}}/participant" class="btn btn-primary me-md-2">Register as Participant</a>
+        <a href="/register/{{event._id}}/volunteer" class="btn btn-outline-primary">Register as Volunteer</a>
+      </div>
+    {{else}}
+      <div class="alert alert-secondary">
+        This event has already taken place.
+      </div>
+    {{/isFutureDate}}
+  </div>
+</div>
+
+<a href="/events" class="btn btn-secondary">Back to Events</a>
